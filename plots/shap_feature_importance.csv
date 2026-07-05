@@ -1,0 +1,44 @@
+Feature,MeanAbsSHAP
+DaysInArrears,0.09042952929215982
+AccountActivity,0.06596679469076668
+NumberOfRepayments,0.06084773959943475
+AverageRepaymentValue,0.05857646247194819
+NumberOfDeposits,0.04620863859347215
+MissedInstallments,0.03268455716715685
+LoanDuration,0.031087593963993115
+AverageMonthlyIncome,0.013523441762056191
+LoanAmount,0.01090787865865911
+TotalCollateralValue,0.010424481809398497
+ApprovalYear,0.00836633092268516
+PreviousLoansCount,0.008002724416090628
+MembershipYears,0.007506536123899916
+LoanToIncomeRatio,0.006585968036867348
+DTI,0.005209513616076391
+Age,0.0041079643287088765
+CurrentSavingsBalance,0.0036627292444392453
+SavingsToLoanRatio,0.0035168909765887556
+ApprovalMonth,0.0032126978862883075
+ApprovalQuarter,0.002986047273468052
+GuarantorCount,0.002856639340458606
+Gender,0.001756085165790768
+LoanTypeGrouped_Other,0.001530768591179715
+EmploymentStatus,0.0010616436138595805
+InterestRate,0.0008508230337711359
+LoanTypeGrouped_Retail trade,0.0006796914812625981
+MaritalStatusGrouped_SINGLE,0.0006074524027777801
+LoanTypeGrouped_Crop growing/production,0.0005296653187418965
+LoanTypeGrouped_Animal Fattening and rearing,0.0005243070199391792
+RepaymentSchedule_MONTHLY,0.0004729009609118983
+LoanTypeGrouped_Land purchase,0.00042806805610971007
+LoanTypeGrouped_Domestic and other consumer durables,0.00041213977604785223
+RepaymentSchedule_QUARTERLY,0.00036120574726264404
+MaritalStatusGrouped_OTHER,0.00034946249034783957
+LoanTypeGrouped_Other assets purchase,0.0002384993471631515
+"LoanTypeGrouped_Re-sale of textile,clothing and Leather",0.0001673554347497897
+LoanTypeGrouped_Whole sale Trade,0.0001427305412066113
+LoanTypeGrouped_Agro-produce trade,0.00014175150341011648
+PreviousDefaultHistory,9.958907435941069e-05
+DisbursementDelay,7.434068217344928e-05
+LoanToCollateralRatio,0.0
+CollateralCoverage,0.0
+LTV,0.0

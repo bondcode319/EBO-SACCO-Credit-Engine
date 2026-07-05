@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBO-SACCO Credit AI Engine v2.0</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Credit.AI <span>Engine v2.0</span></h1>
+            <p>Next-Generation Predictive Loan Assessment</p>
+        </header>
+
+        <main>
+            <div class="glass-panel form-panel">
+                <h2>Applicant Data</h2>
+                <form id="predictionForm">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>Age</label>
+                            <input type="number" id="age" value="30" min="18" max="120" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Employment</label>
+                            <select id="employment_status">
+                                <option value="Employed">Employed</option>
+                                <option value="Self-Employed">Self-Employed</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Previous Default</label>
+                            <select id="prev_default">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Monthly Income (UGX)</label>
+                            <input type="number" id="income" value="1000000" min="0" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Savings Balance (UGX)</label>
+                            <input type="number" id="savings" value="500000" min="0" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Loan Amount (UGX)</label>
+                            <input type="number" id="loan_amount" value="2000000" min="1" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Collateral Value (UGX)</label>
+                            <input type="number" id="collateral" value="3000000" min="0" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Duration (Months)</label>
+                            <input type="number" id="loan_duration" value="12" min="1" max="72" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Guarantors</label>
+                            <input type="number" id="guarantor_count" value="1" min="0" max="20">
+                        </div>
+                        <div class="input-group">
+                            <label>Membership Years</label>
+                            <input type="number" id="membership_years" value="3" min="0" max="50">
+                        </div>
+                        <div class="input-group">
+                            <label>Previous Loans</label>
+                            <input type="number" id="previous_loans_count" value="1" min="0" max="100">
+                        </div>
+                        <div class="input-group">
+                            <label>Interest Rate (%)</label>
+                            <input type="number" id="interest_rate" value="24" min="0" max="100" step="0.5">
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div class="input-group full-width">
+                            <label>AI Algorithm (Academic Comparison)</label>
+                            <select id="model_choice" style="font-weight: bold; color: var(--primary);">
+                                <option value="XGBoost">XGBoost (Best AUC)</option>
+                                <option value="Random Forest">Random Forest</option>
+                                <option value="Decision Tree">Decision Tree</option>
+                                <option value="Logistic Regression">Logistic Regression</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="glow-button">Analyze Profile</button>
+                </form>
+            </div>
+
+            <div class="glass-panel result-panel">
+                <h2>Assessment Result</h2>
+                <div id="resultDisplay" class="result-display">
+                    <div class="idle-state">
+                        <p>Awaiting applicant data...</p>
+                        <p>Submit the form to run the AI risk assessment.</p>
+                    </div>
+                </div>
+                <div class="risk-metrics">
+                    <div class="metric">
+                        <div class="label">DTI Ratio</div>
+                        <div class="value" id="val-dti">—</div>
+                    </div>
+                    <div class="metric">
+                        <div class="label">LTV Ratio</div>
+                        <div class="value" id="val-ltv">—</div>
+                    </div>
+                    <div class="metric">
+                        <div class="label">Default Prob.</div>
+                        <div class="value" id="val-default-prob">—</div>
+                    </div>
+                    <div class="metric">
+                        <div class="label">Model</div>
+                        <div class="value" id="val-model">—</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>EBO-SACCO Credit Scoring System v2.0 — MSc IT Research Project, Victoria University Kampala</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

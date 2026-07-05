@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(python -m pip --version)",
+      "PowerShell(python -c \"import flask, sklearn, xgboost, shap, pandas; print\\('deps OK'\\)\")",
+      "PowerShell(python -m pip install -r requirements.txt --quiet --disable-pip-version-check)",
+      "PowerShell(\\(Get-Content api.py | Measure-Object -Line\\).Lines; \\(Get-Content app.py | Measure-Object -Line\\).Lines; \\(Get-Content train.py | Measure-Object -Line\\).Lines; \\(Get-Content eval_model.py | Measure-Object -Line\\).Lines)"
+    ]
+  }
+}

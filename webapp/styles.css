@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
+
+:root {
+    --bg-color: #F4F4F0;
+    --panel-bg: #FFFFFF;
+    --text-color: #111111;
+    --border-color: #000000;
+    
+    /* Neo-Brutalist Accents */
+    --accent-btn: #FFD500;
+    --accent-focus: #DFD3FF;
+    --success: #00E676;
+    --success-bg: #E8F5E9;
+    --danger: #FF3D00;
+    --danger-bg: #FFEBEE;
+    
+    --shadow-solid: 6px 6px 0px #000000;
+    --shadow-solid-sm: 4px 4px 0px #000000;
+    --border-thick: 3px solid #000000;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image: radial-gradient(#d1d1d1 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.background-orbs { display: none; }
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    text-transform: uppercase;
+    text-shadow: 4px 4px 0px #FFF, 5px 5px 0px #000;
+}
+
+header p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 10px;
+    background: #000;
+    color: #FFF;
+    display: inline-block;
+    padding: 5px 15px;
+    transform: rotate(-1deg);
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+}
+
+/* Neo-Brutalist Panel */
+.glass-panel {
+    background: var(--panel-bg);
+    border: var(--border-thick);
+    padding: 40px;
+    box-shadow: var(--shadow-solid);
+    border-radius: 0;
+}
+
+h2 {
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: var(--border-thick);
+    padding-bottom: 10px;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+input, select {
+    width: 100%;
+    background: #FFF;
+    border: var(--border-thick);
+    color: var(--text-color);
+    padding: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 2px 2px 0px #000;
+}
+
+input:focus, select:focus {
+    outline: none;
+    background: var(--accent-focus);
+    box-shadow: var(--shadow-solid-sm);
+    transform: translate(-2px, -2px);
+}
+
+/* Neo-Brutalist Button */
+.glow-button {
+    width: 100%;
+    background: var(--accent-btn);
+    color: var(--text-color);
+    border: var(--border-thick);
+    padding: 20px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-solid);
+    transition: all 0.1s ease;
+}
+
+.glow-button:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px #000;
+}
+
+.glow-button:active {
+    transform: translate(6px, 6px);
+    box-shadow: 0px 0px 0px #000;
+    background: #E5C000;
+}
+
+/* Result Display */
+.result-display {
+    height: auto;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #FFF;
+    border: var(--border-thick);
+    box-shadow: var(--shadow-solid);
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 30px;
+}
+
+.idle-state {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.result-approved {
+    background: var(--success-bg);
+}
+.result-approved h3 { color: var(--success); text-shadow: 2px 2px 0px #000; }
+
+.result-denied {
+    background: var(--danger-bg);
+}
+.result-denied h3 { color: var(--danger); text-shadow: 2px 2px 0px #000; }
+
+.result-display h3 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.result-display p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: #000;
+    color: #FFF;
+    padding: 5px 15px;
+    display: inline-block;
+}
+
+/* Metrics Dashboard */
+.risk-metrics {
+    display: flex;
+    gap: 20px;
+}
+
+.metric {
+    flex: 1;
+    background: #FFF;
+    padding: 20px;
+    border: var(--border-thick);
+    box-shadow: var(--shadow-solid-sm);
+    text-align: center;
+}
+
+.metric .label {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.metric .value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Loader */
+.loader {
+    width: 50px;
+    height: 50px;
+    border: var(--border-thick);
+    background: var(--accent-btn);
+    animation: spin 1s linear infinite;
+    box-shadow: 4px 4px 0px #000;
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }

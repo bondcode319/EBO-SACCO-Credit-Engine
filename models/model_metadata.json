@@ -1,0 +1,138 @@
+{
+  "version": "2.0.0",
+  "trained_at": "2026-07-04T20:36:45.519786",
+  "best_model": "XGBoost",
+  "split_method": "TEMPORAL (train: 2021-2024, test: 2025)",
+  "n_features": 43,
+  "feature_names": [
+    "Gender",
+    "Age",
+    "EmploymentStatus",
+    "TotalCollateralValue",
+    "GuarantorCount",
+    "AverageMonthlyIncome",
+    "CurrentSavingsBalance",
+    "MembershipYears",
+    "PreviousLoansCount",
+    "PreviousDefaultHistory",
+    "LoanAmount",
+    "InterestRate",
+    "LoanDuration",
+    "MissedInstallments",
+    "NumberOfDeposits",
+    "NumberOfRepayments",
+    "AverageRepaymentValue",
+    "AccountActivity",
+    "DaysInArrears",
+    "ApprovalYear",
+    "ApprovalMonth",
+    "ApprovalQuarter",
+    "DisbursementDelay",
+    "LoanToIncomeRatio",
+    "LoanToCollateralRatio",
+    "SavingsToLoanRatio",
+    "CollateralCoverage",
+    "DTI",
+    "LTV",
+    "RepaymentSchedule_MONTHLY",
+    "RepaymentSchedule_QUARTERLY",
+    "LoanTypeGrouped_Agro-produce trade",
+    "LoanTypeGrouped_Animal Fattening and rearing",
+    "LoanTypeGrouped_Crop growing/production",
+    "LoanTypeGrouped_Domestic and other consumer durables",
+    "LoanTypeGrouped_Land purchase",
+    "LoanTypeGrouped_Other",
+    "LoanTypeGrouped_Other assets purchase",
+    "LoanTypeGrouped_Re-sale of textile,clothing and Leather",
+    "LoanTypeGrouped_Retail trade",
+    "LoanTypeGrouped_Whole sale Trade",
+    "MaritalStatusGrouped_OTHER",
+    "MaritalStatusGrouped_SINGLE"
+  ],
+  "train_samples": 12952,
+  "test_samples": 4048,
+  "cv_folds": 5,
+  "cv_scores": {
+    "Logistic Regression": {
+      "mean_auc": 0.7919573589293051,
+      "std_auc": 0.007309449073859178,
+      "fold_scores": [
+        0.7932578310981215,
+        0.778777272334441,
+        0.8012177779872879,
+        0.7943958642688227,
+        0.7921380489578521
+      ]
+    },
+    "Decision Tree": {
+      "mean_auc": 0.8905834686016345,
+      "std_auc": 0.003977983251009654,
+      "fold_scores": [
+        0.8866012994869619,
+        0.8948898500168917,
+        0.8914521806082605,
+        0.8853365781224221,
+        0.8946374347736363
+      ]
+    },
+    "Random Forest": {
+      "mean_auc": 0.9244722678247589,
+      "std_auc": 0.004221655396564534,
+      "fold_scores": [
+        0.9240424729535437,
+        0.9176821363754213,
+        0.9309885214603909,
+        0.924587330394953,
+        0.9250608779394857
+      ]
+    },
+    "XGBoost": {
+      "mean_auc": 0.9700427704790717,
+      "std_auc": 0.0042835522435876435,
+      "fold_scores": [
+        0.9698108336167052,
+        0.973265450057304,
+        0.9728573904002773,
+        0.9618235377514531,
+        0.9724566405696192
+      ]
+    }
+  },
+  "test_metrics": {
+    "XGBoost": {
+      "Accuracy": 0.7850790513833992,
+      "Precision": 0.9523809523809523,
+      "Recall (Repaid)": 0.7078313253012049,
+      "Recall (Default)": 0.9324712643678161,
+      "F1-Score": 0.8120950323974082,
+      "ROC-AUC": 0.878748561054563
+    },
+    "Logistic Regression": {
+      "Accuracy": 0.7445652173913043,
+      "Precision": 0.8065003779289494,
+      "Recall (Repaid)": 0.8034638554216867,
+      "Recall (Default)": 0.632183908045977,
+      "F1-Score": 0.8049792531120332,
+      "ROC-AUC": 0.8457215175356598
+    },
+    "Random Forest": {
+      "Accuracy": 0.696393280632411,
+      "Precision": 0.8694976696012429,
+      "Recall (Repaid)": 0.6321536144578314,
+      "Recall (Default)": 0.8189655172413793,
+      "F1-Score": 0.7320688903422716,
+      "ROC-AUC": 0.8137574543865116
+    },
+    "Decision Tree": {
+      "Accuracy": 0.6778656126482213,
+      "Precision": 0.8470225872689938,
+      "Recall (Repaid)": 0.6212349397590361,
+      "Recall (Default)": 0.7859195402298851,
+      "F1-Score": 0.7167680278019114,
+      "ROC-AUC": 0.7661874599691871
+    }
+  },
+  "sklearn_version": "1.7.2",
+  "xgboost_version": "3.2.0",
+  "python_version": "3.10.12"
+}
