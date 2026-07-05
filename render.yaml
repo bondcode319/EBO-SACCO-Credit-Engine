@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: ebo-sacco-credit-engine
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    # Single worker so the 4 models + SHAP explainers are loaded once (memory).
+    startCommand: gunicorn api:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.4

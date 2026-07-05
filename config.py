@@ -92,9 +92,14 @@ HYPERPARAMS = {
 }
 
 # ── API Configuration ─────────────────────────────────────────────────────────
-API_PORT = 5000
+# PORT is injected by hosting platforms (e.g. Render); falls back to 5000 locally.
+API_PORT = int(os.environ.get("PORT", 5000))
 ALLOWED_ORIGINS = ["http://localhost:5000", "http://127.0.0.1:5000",
                    "http://localhost:8501", "http://127.0.0.1:8501"]
+# Render exposes the public URL of the service in RENDER_EXTERNAL_URL.
+_external_url = os.environ.get("RENDER_EXTERNAL_URL")
+if _external_url:
+    ALLOWED_ORIGINS.append(_external_url.rstrip("/"))
 
 # Business rule guardrails
 MIN_AGE = 18

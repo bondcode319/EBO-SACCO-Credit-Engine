@@ -115,7 +115,7 @@ document.getElementById('predictionForm').addEventListener('submit', async (e) =
     } catch (error) {
         resultDisplay.className = 'result-display result-denied';
         resultDisplay.innerHTML = `<h3>Connection Error</h3>
-            <p>Could not reach the prediction API at localhost:5000.</p>
-            <p style="font-size:0.9rem; margin-top:10px;">Make sure the Flask server is running: <code>python api.py</code></p>`;
+            <p>Could not reach the prediction API.</p>
+            <p style="font-size:0.9rem; margin-top:10px;">Please try again in a moment. If running locally, make sure the Flask server is up: <code>python api.py</code></p>`;
     }
 });

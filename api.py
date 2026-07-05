@@ -372,4 +372,5 @@ def predict():
 if __name__ == '__main__':
     logger.info(f"EBO-SACCO API v{model_metadata.get('version', '?')} starting on port {API_PORT}")
     logger.info(f"Webapp served at http://localhost:{API_PORT}/")
-    app.run(host='127.0.0.1', port=API_PORT, debug=False)
+    host = '0.0.0.0' if os.environ.get('RENDER') else '127.0.0.1'
+    app.run(host=host, port=API_PORT, debug=False)
