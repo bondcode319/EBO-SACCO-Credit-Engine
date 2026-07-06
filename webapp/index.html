@@ -14,9 +14,21 @@
         <div class="orb orb-3"></div>
     </div>
 
+    <div class="menu-wrapper">
+        <button id="menuToggle" class="hamburger-btn" aria-label="Menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div id="menuDropdown" class="menu-dropdown">
+            <button type="button" class="menu-item" id="faqBtn">FAQ</button>
+            <button type="button" class="menu-item" id="docsBtn">Documentation</button>
+        </div>
+    </div>
+
     <div class="container">
         <header>
-            <h1>Credit.AI <span>Engine v2.0</span></h1>
+            <h1>Credit.AI <span>Engine </span></h1>
             <p>Next-Generation Predictive Loan Assessment</p>
         </header>
 
@@ -45,19 +57,19 @@
                         </div>
                         <div class="input-group">
                             <label>Monthly Income (UGX)</label>
-                            <input type="number" id="income" value="1000000" min="0" required>
+                            <input type="text" inputmode="numeric" autocomplete="off" class="money-input" id="income" value="1000000" required>
                         </div>
                         <div class="input-group">
                             <label>Savings Balance (UGX)</label>
-                            <input type="number" id="savings" value="500000" min="0" required>
+                            <input type="text" inputmode="numeric" autocomplete="off" class="money-input" id="savings" value="500000" required>
                         </div>
                         <div class="input-group">
                             <label>Loan Amount (UGX)</label>
-                            <input type="number" id="loan_amount" value="2000000" min="1" required>
+                            <input type="text" inputmode="numeric" autocomplete="off" class="money-input" id="loan_amount" value="2000000" required>
                         </div>
                         <div class="input-group">
                             <label>Collateral Value (UGX)</label>
-                            <input type="number" id="collateral" value="3000000" min="0" required>
+                            <input type="text" inputmode="numeric" autocomplete="off" class="money-input" id="collateral" value="3000000" required>
                         </div>
                         <div class="input-group">
                             <label>Duration (Months)</label>
@@ -125,7 +137,8 @@
         </main>
 
         <footer>
-            <p>EBO-SACCO Credit Scoring System v2.0 — MSc IT Research Project, Victoria University Kampala</p>
+            <p style="word-spacing: 20px;">.</p>
+            <p>EBO-SACCO Credit Scoring System  — MSc IT Research Project, Victoria University Kampala</p>
         </footer>
     </div>
 

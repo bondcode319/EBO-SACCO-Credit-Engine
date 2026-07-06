@@ -2,6 +2,8 @@
 
 A supervised machine learning framework for loan repayment prediction, developed for EBO-SACCO microfinance institution in Western Uganda. Built as part of an MSc IT research project at Victoria University, Kampala.
 
+> 📘 **Full technical documentation:** see [docs/MODEL_DOCUMENTATION.md](docs/MODEL_DOCUMENTATION.md) — dataset, feature engineering, training methodology, evaluation results, API reference, guardrails, and ethical considerations.
+
 ## Architecture
 
 The system uses a decoupled architecture with three interfaces:

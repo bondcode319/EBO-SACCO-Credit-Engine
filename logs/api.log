@@ -217,3 +217,93 @@
 2026-07-05 13:41:00,062 [INFO] 127.0.0.1 - - [05/Jul/2026 13:41:00] "POST /predict HTTP/1.1" 200 -
 2026-07-05 13:41:07,828 [INFO] Prediction: model=XGBoost approved=True P(default)=0.059 DTI=8.3 LTV=50.0 violations=0
 2026-07-05 13:41:07,830 [INFO] 127.0.0.1 - - [05/Jul/2026 13:41:07] "POST /predict HTTP/1.1" 200 -
+2026-07-05 16:57:56,342 [INFO] Loaded model: Logistic Regression
+2026-07-05 16:57:56,345 [INFO] Loaded model: Decision Tree
+2026-07-05 16:57:56,532 [INFO] Loaded model: Random Forest
+2026-07-05 16:57:56,739 [INFO] Loaded model: XGBoost
+2026-07-05 16:57:56,742 [INFO] SHAP explainer ready: Logistic Regression (LogisticRegression)
+2026-07-05 16:57:56,745 [INFO] SHAP explainer ready: Decision Tree (DecisionTreeClassifier)
+2026-07-05 16:57:56,884 [INFO] SHAP explainer ready: Random Forest (RandomForestClassifier)
+2026-07-05 16:57:57,081 [INFO] SHAP explainer ready: XGBoost (XGBClassifier)
+2026-07-05 16:57:57,521 [INFO] Prediction: model=XGBoost approved=True P(default)=0.036 DTI=12.5 LTV=50.0 violations=0
+2026-07-06 10:22:40,462 [INFO] Loaded model: Logistic Regression
+2026-07-06 10:22:40,464 [INFO] Loaded model: Decision Tree
+2026-07-06 10:22:40,517 [INFO] Loaded model: Random Forest
+2026-07-06 10:22:40,779 [INFO] Loaded model: XGBoost
+2026-07-06 10:22:40,863 [INFO] SHAP explainer ready: Logistic Regression (LogisticRegression)
+2026-07-06 10:22:40,865 [INFO] SHAP explainer ready: Decision Tree (DecisionTreeClassifier)
+2026-07-06 10:22:40,914 [INFO] SHAP explainer ready: Random Forest (RandomForestClassifier)
+2026-07-06 10:22:41,033 [INFO] SHAP explainer ready: XGBoost (XGBClassifier)
+2026-07-06 10:22:41,210 [INFO] Prediction: model=XGBoost approved=True P(default)=0.036 DTI=12.5 LTV=50.0 violations=0
+2026-07-06 10:29:16,017 [INFO] Loaded model: Logistic Regression
+2026-07-06 10:29:16,019 [INFO] Loaded model: Decision Tree
+2026-07-06 10:29:16,089 [INFO] Loaded model: Random Forest
+2026-07-06 10:29:16,155 [INFO] Loaded model: XGBoost
+2026-07-06 10:29:16,158 [INFO] SHAP explainer ready: Logistic Regression (LogisticRegression)
+2026-07-06 10:29:16,160 [INFO] SHAP explainer ready: Decision Tree (DecisionTreeClassifier)
+2026-07-06 10:29:16,269 [INFO] SHAP explainer ready: Random Forest (RandomForestClassifier)
+2026-07-06 10:29:16,381 [INFO] SHAP explainer ready: XGBoost (XGBClassifier)
+2026-07-06 10:29:16,384 [INFO] EBO-SACCO API v2.0.0 starting on port 5000
+2026-07-06 10:29:16,384 [INFO] Webapp served at http://localhost:5000/
+2026-07-06 10:29:16,428 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-07-06 10:29:16,429 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-06 10:29:21,511 [INFO] 127.0.0.1 - - [06/Jul/2026 10:29:21] "GET / HTTP/1.1" 200 -
+2026-07-06 10:29:21,567 [INFO] 127.0.0.1 - - [06/Jul/2026 10:29:21] "GET /script.js HTTP/1.1" 200 -
+2026-07-06 10:29:21,586 [INFO] 127.0.0.1 - - [06/Jul/2026 10:29:21] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 10:29:28,483 [INFO] 127.0.0.1 - - [06/Jul/2026 10:29:28] "GET / HTTP/1.1" 200 -
+2026-07-06 10:29:28,742 [INFO] 127.0.0.1 - - [06/Jul/2026 10:29:28] "GET /script.js HTTP/1.1" 200 -
+2026-07-06 10:29:28,753 [INFO] 127.0.0.1 - - [06/Jul/2026 10:29:28] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 10:29:29,614 [INFO] 127.0.0.1 - - [06/Jul/2026 10:29:29] "GET /script.js HTTP/1.1" 200 -
+2026-07-06 10:29:35,540 [INFO] Prediction: model=XGBoost approved=False P(default)=0.065 DTI=16.7 LTV=66.7 violations=1
+2026-07-06 10:29:35,541 [INFO] 127.0.0.1 - - [06/Jul/2026 10:29:35] "POST /predict HTTP/1.1" 200 -
+2026-07-06 10:33:27,203 [INFO] 127.0.0.1 - - [06/Jul/2026 10:33:27] "GET / HTTP/1.1" 200 -
+2026-07-06 10:33:27,299 [INFO] 127.0.0.1 - - [06/Jul/2026 10:33:27] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 10:33:27,371 [INFO] 127.0.0.1 - - [06/Jul/2026 10:33:27] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 10:33:27,465 [INFO] 127.0.0.1 - - [06/Jul/2026 10:33:27] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 10:34:17,617 [INFO] 127.0.0.1 - - [06/Jul/2026 10:34:17] "GET / HTTP/1.1" 200 -
+2026-07-06 10:34:17,799 [INFO] 127.0.0.1 - - [06/Jul/2026 10:34:17] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 10:34:17,807 [INFO] 127.0.0.1 - - [06/Jul/2026 10:34:17] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 10:34:17,918 [INFO] 127.0.0.1 - - [06/Jul/2026 10:34:17] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 10:34:44,659 [INFO] 127.0.0.1 - - [06/Jul/2026 10:34:44] "GET / HTTP/1.1" 200 -
+2026-07-06 10:34:44,755 [INFO] 127.0.0.1 - - [06/Jul/2026 10:34:44] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 10:34:44,829 [INFO] 127.0.0.1 - - [06/Jul/2026 10:34:44] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 10:34:44,971 [INFO] 127.0.0.1 - - [06/Jul/2026 10:34:44] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 10:35:58,213 [INFO] 127.0.0.1 - - [06/Jul/2026 10:35:58] "GET / HTTP/1.1" 200 -
+2026-07-06 10:35:58,322 [INFO] 127.0.0.1 - - [06/Jul/2026 10:35:58] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 10:35:58,332 [INFO] 127.0.0.1 - - [06/Jul/2026 10:35:58] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 10:35:58,869 [INFO] 127.0.0.1 - - [06/Jul/2026 10:35:58] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 10:54:59,658 [INFO] 127.0.0.1 - - [06/Jul/2026 10:54:59] "GET / HTTP/1.1" 200 -
+2026-07-06 10:54:59,767 [INFO] 127.0.0.1 - - [06/Jul/2026 10:54:59] "GET /script.js HTTP/1.1" 200 -
+2026-07-06 10:54:59,873 [INFO] 127.0.0.1 - - [06/Jul/2026 10:54:59] "GET /styles.css HTTP/1.1" 200 -
+2026-07-06 10:54:59,999 [INFO] 127.0.0.1 - - [06/Jul/2026 10:54:59] "GET /script.js HTTP/1.1" 200 -
+2026-07-06 10:55:03,590 [INFO] 127.0.0.1 - - [06/Jul/2026 10:55:03] "[33mGET /faq.html HTTP/1.1[0m" 404 -
+2026-07-06 10:55:07,976 [INFO] 127.0.0.1 - - [06/Jul/2026 10:55:07] "[33mGET /documentation.html HTTP/1.1[0m" 404 -
+2026-07-06 10:55:26,023 [INFO] 127.0.0.1 - - [06/Jul/2026 10:55:26] "[33mGET /faq.html HTTP/1.1[0m" 404 -
+2026-07-06 11:18:06,205 [INFO] 127.0.0.1 - - [06/Jul/2026 11:18:06] "[36mGET / HTTP/1.1[0m" 304 -
+2026-07-06 11:18:06,565 [INFO] 127.0.0.1 - - [06/Jul/2026 11:18:06] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 11:18:06,590 [INFO] 127.0.0.1 - - [06/Jul/2026 11:18:06] "GET /styles.css HTTP/1.1" 200 -
+2026-07-06 11:18:06,703 [INFO] 127.0.0.1 - - [06/Jul/2026 11:18:06] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 11:18:10,046 [INFO] 127.0.0.1 - - [06/Jul/2026 11:18:10] "GET /faq.html HTTP/1.1" 200 -
+2026-07-06 11:18:10,468 [INFO] 127.0.0.1 - - [06/Jul/2026 11:18:10] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 11:18:55,114 [INFO] 127.0.0.1 - - [06/Jul/2026 11:18:55] "GET /index.html HTTP/1.1" 200 -
+2026-07-06 11:18:57,046 [INFO] 127.0.0.1 - - [06/Jul/2026 11:18:57] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 11:18:57,113 [INFO] 127.0.0.1 - - [06/Jul/2026 11:18:57] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 11:18:58,447 [INFO] 127.0.0.1 - - [06/Jul/2026 11:18:58] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 11:19:01,471 [INFO] 127.0.0.1 - - [06/Jul/2026 11:19:01] "[33mGET /documentation.html HTTP/1.1[0m" 404 -
+2026-07-06 12:55:12,691 [INFO] 127.0.0.1 - - [06/Jul/2026 12:55:12] "GET /documentation.html HTTP/1.1" 200 -
+2026-07-06 12:55:13,127 [INFO] 127.0.0.1 - - [06/Jul/2026 12:55:13] "GET /styles.css HTTP/1.1" 200 -
+2026-07-06 12:55:42,183 [INFO] 127.0.0.1 - - [06/Jul/2026 12:55:42] "[36mGET /index.html HTTP/1.1[0m" 304 -
+2026-07-06 12:55:42,965 [INFO] 127.0.0.1 - - [06/Jul/2026 12:55:42] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 12:55:43,148 [INFO] 127.0.0.1 - - [06/Jul/2026 12:55:43] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 12:55:43,281 [INFO] 127.0.0.1 - - [06/Jul/2026 12:55:43] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 12:55:51,614 [INFO] Prediction: model=XGBoost approved=False P(default)=0.065 DTI=16.7 LTV=66.7 violations=1
+2026-07-06 12:55:51,618 [INFO] 127.0.0.1 - - [06/Jul/2026 12:55:51] "POST /predict HTTP/1.1" 200 -
+2026-07-06 12:56:02,456 [INFO] 127.0.0.1 - - [06/Jul/2026 12:56:02] "[36mGET /faq.html HTTP/1.1[0m" 304 -
+2026-07-06 12:56:02,705 [INFO] 127.0.0.1 - - [06/Jul/2026 12:56:02] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 12:57:45,426 [INFO] 127.0.0.1 - - [06/Jul/2026 12:57:45] "[36mGET /index.html HTTP/1.1[0m" 304 -
+2026-07-06 12:57:45,621 [INFO] 127.0.0.1 - - [06/Jul/2026 12:57:45] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 12:57:45,629 [INFO] 127.0.0.1 - - [06/Jul/2026 12:57:45] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2026-07-06 12:57:45,732 [INFO] 127.0.0.1 - - [06/Jul/2026 12:57:45] "[36mGET /script.js HTTP/1.1[0m" 304 -
+2026-07-06 12:57:49,750 [INFO] Prediction: model=XGBoost approved=False P(default)=0.065 DTI=16.7 LTV=66.7 violations=1
+2026-07-06 12:57:49,751 [INFO] 127.0.0.1 - - [06/Jul/2026 12:57:49] "POST /predict HTTP/1.1" 200 -

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — EBO-SACCO Credit AI Engine v2.0</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <a href="index.html" class="back-btn">&larr; Back to App</a>
+
+    <div class="container faq-container">
+        <header>
+            <h1>FAQ<span></span></h1>
+            <p>Frequently Asked Questions — Credit.AI Engine</p>
+        </header>
+
+        <main class="faq-main">
+
+            <section class="glass-panel faq-section">
+                <h2>General</h2>
+
+                <details class="faq-item">
+                    <summary>What is the EBO-SACCO Credit AI Engine?</summary>
+                    <div class="faq-answer">
+                        <p>It is a machine-learning-based loan assessment system developed for EBO-SACCO, a microfinance institution in Western Uganda. It predicts the likelihood that a loan applicant will repay their loan, helping credit officers make faster, more consistent, and more objective lending decisions. The system was built as part of an MSc IT research project at Victoria University, Kampala.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Does the AI make the final lending decision?</summary>
+                    <div class="faq-answer">
+                        <p>No. The engine is a <strong>decision-support tool</strong>. It produces a repayment prediction, a confidence score, and an explanation of the key factors behind the assessment. The final decision always rests with the credit officer and the SACCO's loan committee, who can weigh factors the model cannot see.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Who should use this system?</summary>
+                    <div class="faq-answer">
+                        <p>The system is designed for credit officers and loan committee members at EBO-SACCO. It can also be used by researchers studying credit scoring in microfinance contexts, as it allows side-by-side comparison of four different machine learning algorithms.</p>
+                    </div>
+                </details>
+            </section>
+
+            <section class="glass-panel faq-section">
+                <h2>How It Works</h2>
+
+                <details class="faq-item">
+                    <summary>What data does the model use to make a prediction?</summary>
+                    <div class="faq-answer">
+                        <p>The model analyzes the applicant profile you enter in the form, including:</p>
+                        <ul>
+                            <li><strong>Personal:</strong> age and employment status</li>
+                            <li><strong>Financial:</strong> monthly income, savings balance, and collateral value</li>
+                            <li><strong>Loan terms:</strong> amount requested, duration, and interest rate</li>
+                            <li><strong>SACCO history:</strong> membership years, number of previous loans, previous default history, and guarantor count</li>
+                        </ul>
+                        <p>From these, the system also derives key risk ratios such as debt-to-income (DTI), loan-to-value (LTV), savings-to-loan ratio, and collateral coverage.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Which algorithms are available and which one should I use?</summary>
+                    <div class="faq-answer">
+                        <p>Four algorithms are trained and compared: <strong>XGBoost</strong>, <strong>Random Forest</strong>, <strong>Decision Tree</strong>, and <strong>Logistic Regression</strong>. XGBoost is the recommended default — it achieved the best performance in evaluation (ROC-AUC of 0.88 on held-out data and about 0.97 in cross-validation). The other algorithms are included for academic comparison as part of the research methodology.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How was the model trained and tested?</summary>
+                    <div class="faq-answer">
+                        <p>The models were trained on roughly 17,000 historical loan records from EBO-SACCO. To simulate real-world use, a <strong>temporal split</strong> was used: models learned from loans issued between 2021 and 2024 and were then tested on loans from 2025 — data they had never seen. Each model was also validated with 5-fold cross-validation to confirm stable performance.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How accurate is the system?</summary>
+                    <div class="faq-answer">
+                        <p>On unseen 2025 test data, the best model (XGBoost) achieved:</p>
+                        <ul>
+                            <li><strong>ROC-AUC:</strong> 0.88 (strong ability to separate repayers from defaulters)</li>
+                            <li><strong>Precision:</strong> 95% (when it predicts repayment, it is right 95% of the time)</li>
+                            <li><strong>Default detection:</strong> 93% of actual defaulters correctly flagged</li>
+                        </ul>
+                        <p>No model is perfect, which is why predictions come with a confidence score and human review remains part of the process.</p>
+                    </div>
+                </details>
+            </section>
+
+            <section class="glass-panel faq-section">
+                <h2>Decisions &amp; Scores</h2>
+
+                <details class="faq-item">
+                    <summary>What do DTI and LTV mean?</summary>
+                    <div class="faq-answer">
+                        <p><strong>DTI (Debt-to-Income ratio)</strong> compares the monthly loan installment to the applicant's monthly income. A lower DTI means the repayment is more affordable. <strong>LTV (Loan-to-Value ratio)</strong> compares the loan amount to the value of the collateral pledged. An LTV below 100% means the loan is fully covered by collateral.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Why was an application denied even with a good profile?</summary>
+                    <div class="faq-answer">
+                        <p>Beyond the AI prediction, the system enforces <strong>policy guardrails</strong> that reflect SACCO lending rules. An application is flagged if:</p>
+                        <ul>
+                            <li>The applicant's age is outside 18–75 years</li>
+                            <li>DTI exceeds 60% (installment too large relative to income)</li>
+                            <li>LTV exceeds 100% (loan not fully covered by collateral)</li>
+                            <li>The loan amount exceeds 3&times; the applicant's savings balance</li>
+                        </ul>
+                        <p>When a guardrail is triggered, it is listed under "Policy Rules Triggered" in the result panel so you can see exactly which rule applied.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What are the "AI Decision Drivers" shown with each result?</summary>
+                    <div class="faq-answer">
+                        <p>These are generated using <strong>SHAP (SHapley Additive exPlanations)</strong>, an industry-standard explainability technique. For every prediction, SHAP identifies which specific factors pushed the assessment toward approval or denial — for example, a strong savings balance lowering risk, or a previous default raising it. This makes the AI's reasoning transparent rather than a black box.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What does the confidence percentage mean?</summary>
+                    <div class="faq-answer">
+                        <p>The confidence score reflects how certain the model is about its prediction, based on the estimated probability of repayment or default. A 90% confidence approval means the model estimates a high probability of full repayment. Borderline cases (confidence near 50%) deserve closer manual review.</p>
+                    </div>
+                </details>
+            </section>
+
+            <section class="glass-panel faq-section">
+                <h2>Data &amp; Fairness</h2>
+
+                <details class="faq-item">
+                    <summary>Is applicant data stored when I run an assessment?</summary>
+                    <div class="faq-answer">
+                        <p>Assessments are processed in real time by the prediction API. Requests are logged for operational monitoring, but the web form does not create or update any applicant records in a database. Data handling should follow EBO-SACCO's internal data protection policies and applicable Ugandan data protection law.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Can the model be biased?</summary>
+                    <div class="faq-answer">
+                        <p>Any model trained on historical data can reflect patterns in that data, including historical biases. Mitigations in this system include class-weight balancing during training, transparent SHAP explanations for every decision, hard policy guardrails applied equally to all applicants, and human review of every final decision. Periodic re-evaluation of model fairness is recommended as new data accumulates.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How often should the model be retrained?</summary>
+                    <div class="faq-answer">
+                        <p>Credit behavior changes over time (economic conditions, drought seasons, market prices), so the model should be retrained periodically — typically every 6–12 months, or whenever monitoring shows performance drift. The training pipeline is fully automated: rerunning it regenerates all models, evaluation plots, and versioned artifacts.</p>
+                    </div>
+                </details>
+            </section>
+
+            <section class="glass-panel faq-section">
+                <h2>Troubleshooting</h2>
+
+                <details class="faq-item">
+                    <summary>I get a "Connection Error" when submitting the form. What do I do?</summary>
+                    <div class="faq-answer">
+                        <p>This means the web page could not reach the prediction API. If you are running the system locally, make sure the Flask server is running (<code>python api.py</code>) and then reload the page. If using the hosted version, the server may be waking up from idle — wait a few seconds and try again.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Why does the form reject my input with a "Data Error"?</summary>
+                    <div class="faq-answer">
+                        <p>The API validates every field against sensible bounds before scoring — for example, age must be 18–120, loan duration 1–72 months, and monetary values must be non-negative. The error message states which field failed validation. Correct the value and resubmit.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Who do I contact for support or feedback?</summary>
+                    <div class="faq-answer">
+                        <p>For technical issues, model questions, or research inquiries, contact the project team through EBO-SACCO's IT office or the research supervisor at Victoria University, Kampala.</p>
+                    </div>
+                </details>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>EBO-SACCO Credit Scoring System — MSc IT Research Project, Victoria University Kampala</p>
+        </footer>
+    </div>
+</body>
+</html>

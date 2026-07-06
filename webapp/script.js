@@ -1,3 +1,63 @@
+// ── UGX thousand-separator formatting ────────────────────────────────────────
+const MONEY_FIELDS = ['income', 'savings', 'loan_amount', 'collateral'];
+
+function unformatMoney(value) {
+    return String(value).replace(/[^\d]/g, '');
+}
+
+function formatMoney(digits) {
+    return digits ? Number(digits).toLocaleString('en-US') : '';
+}
+
+MONEY_FIELDS.forEach(id => {
+    const input = document.getElementById(id);
+
+    input.addEventListener('input', () => {
+        // Remember how many digits sit left of the caret, reformat, then
+        // put the caret back after that same digit count.
+        const digitsBeforeCaret = unformatMoney(input.value.slice(0, input.selectionStart)).length;
+        input.value = formatMoney(unformatMoney(input.value));
+
+        let pos = 0, seen = 0;
+        while (pos < input.value.length && seen < digitsBeforeCaret) {
+            if (/\d/.test(input.value[pos])) seen++;
+            pos++;
+        }
+        input.setSelectionRange(pos, pos);
+    });
+
+    // Format the initial default value on page load
+    input.value = formatMoney(unformatMoney(input.value));
+});
+
+// ── Hamburger menu ────────────────────────────────────────────────────────────
+const menuToggle = document.getElementById('menuToggle');
+const menuDropdown = document.getElementById('menuDropdown');
+
+menuToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = menuDropdown.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', isOpen);
+});
+
+// Close the menu when clicking anywhere outside it
+document.addEventListener('click', (e) => {
+    if (!menuDropdown.contains(e.target)) {
+        menuDropdown.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+    }
+});
+
+document.getElementById('faqBtn').addEventListener('click', () => {
+    // TODO: point this at the FAQ page/section when it exists
+    window.location.href = 'faq.html';
+});
+
+document.getElementById('docsBtn').addEventListener('click', () => {
+    // TODO: point this at the documentation page when it exists
+    window.location.href = 'documentation.html';
+});
+
 document.getElementById('predictionForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -16,10 +76,10 @@ document.getElementById('predictionForm').addEventListener('submit', async (e) =
         age: document.getElementById('age').value,
         employment_status: document.getElementById('employment_status').value,
         prev_default: document.getElementById('prev_default').value,
-        income: document.getElementById('income').value,
-        savings: document.getElementById('savings').value,
-        loan_amount: document.getElementById('loan_amount').value,
-        collateral: document.getElementById('collateral').value,
+        income: unformatMoney(document.getElementById('income').value),
+        savings: unformatMoney(document.getElementById('savings').value),
+        loan_amount: unformatMoney(document.getElementById('loan_amount').value),
+        collateral: unformatMoney(document.getElementById('collateral').value),
         loan_duration: document.getElementById('loan_duration').value,
         guarantor_count: document.getElementById('guarantor_count').value,
         membership_years: document.getElementById('membership_years').value,

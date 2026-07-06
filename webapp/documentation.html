@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation — EBO-SACCO Credit AI Engine v2.0</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <a href="index.html" class="back-btn">&larr; Back</a>
+
+    <div class="container docs-container">
+        <header>
+            <h1>Documentation</h1>
+            <p>EBO-SACCO Credit Scoring System v2.0</p>
+        </header>
+
+        <main class="docs-main">
+
+            <!-- Table of Contents -->
+            <nav class="glass-panel docs-toc">
+                <h2>Contents</h2>
+                <ol>
+                    <li><a href="#overview">Executive Summary</a></li>
+                    <li><a href="#architecture">System Architecture</a></li>
+                    <li><a href="#dataset">Dataset</a></li>
+                    <li><a href="#features">Feature Engineering</a></li>
+                    <li><a href="#training">Training Methodology</a></li>
+                    <li><a href="#results">Evaluation Results</a></li>
+                    <li><a href="#explainability">Explainability (SHAP)</a></li>
+                    <li><a href="#api">API Reference</a></li>
+                    <li><a href="#guardrails">Business Rule Guardrails</a></li>
+                    <li><a href="#deployment">Deployment &amp; Operations</a></li>
+                    <li><a href="#limitations">Limitations &amp; Ethics</a></li>
+                    <li><a href="#retraining">Retraining Procedure</a></li>
+                </ol>
+            </nav>
+
+            <!-- 1. Executive Summary -->
+            <section id="overview" class="glass-panel docs-section">
+                <h2>1. Executive Summary</h2>
+                <p>The EBO-SACCO Credit Scoring System is a supervised machine learning framework that predicts whether a loan applicant will <strong>repay (class 1)</strong> or <strong>default (class 0)</strong>. It was trained on 17,000 historical loan records (2021&ndash;2025) from EBO-SACCO's portfolio in Western Uganda, as part of an MSc IT research project at Victoria University, Kampala.</p>
+                <div class="docs-stats">
+                    <div class="docs-stat"><div class="label">Champion Model</div><div class="value">XGBoost</div></div>
+                    <div class="docs-stat"><div class="label">Test ROC-AUC</div><div class="value">0.879</div></div>
+                    <div class="docs-stat"><div class="label">Default Recall</div><div class="value">93.2%</div></div>
+                    <div class="docs-stat"><div class="label">Precision</div><div class="value">95.2%</div></div>
+                </div>
+                <p>Four algorithms were trained and benchmarked &mdash; Logistic Regression, Decision Tree, Random Forest, and XGBoost. Predictions are served through a Flask REST API with:</p>
+                <ul>
+                    <li><strong>SHAP explainability</strong> &mdash; every prediction returns its top decision drivers in plain language.</li>
+                    <li><strong>Business rule guardrails</strong> &mdash; hard policy limits (age, DTI, LTV, savings multiplier) that override the model and can never be out-voted by it.</li>
+                    <li><strong>Input validation</strong> &mdash; bounded, typed request checking before any inference runs.</li>
+                </ul>
+            </section>
+
+            <!-- 2. Architecture -->
+            <section id="architecture" class="glass-panel docs-section">
+                <h2>2. System Architecture</h2>
+                <p>The system uses a decoupled architecture with a shared configuration module:</p>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Component</th><th>File</th><th>Role</th></tr></thead>
+                    <tbody>
+                        <tr><td>Configuration</td><td><code>config.py</code></td><td>Single source of truth for paths, feature lists, hyperparameters, guardrails</td></tr>
+                        <tr><td>Training pipeline</td><td><code>train.py</code></td><td>7-phase pipeline: load &rarr; preprocess &rarr; split &rarr; train &rarr; evaluate &rarr; plot &rarr; save</td></tr>
+                        <tr><td>Evaluation</td><td><code>eval_model.py</code></td><td>Standalone re-evaluation with McNemar's test and SHAP analysis</td></tr>
+                        <tr><td>Prediction API</td><td><code>api.py</code></td><td>Flask REST API with SHAP explanations and guardrails</td></tr>
+                        <tr><td>Web frontend</td><td><code>webapp/</code></td><td>This interface &mdash; calls the API for live scoring</td></tr>
+                        <tr><td>Streamlit app</td><td><code>app.py</code></td><td>Alternative interactive frontend</td></tr>
+                        <tr><td>Deployment</td><td><code>render.yaml</code></td><td>Render.com web service (gunicorn, single worker)</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </section>
+
+            <!-- 3. Dataset -->
+            <section id="dataset" class="glass-panel docs-section">
+                <h2>3. Dataset</h2>
+                <div class="table-scroll">
+                <table>
+                    <tbody>
+                        <tr><th>Source</th><td>EBO-SACCO loan history (Excel)</td></tr>
+                        <tr><th>Records</th><td>17,000 loans (12,952 train / 4,048 test)</td></tr>
+                        <tr><th>Period</th><td>2021&ndash;2025</td></tr>
+                        <tr><th>Target</th><td><code>LoanStatus</code> &mdash; 0 = Default, 1 = Repaid</td></tr>
+                        <tr><th>Raw fields</th><td>Demographics, financials, loan terms, repayment behaviour, dates</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <h3>Columns removed before training</h3>
+                <ul>
+                    <li><strong>Identifiers:</strong> <code>BorrowerID</code>, <code>Name</code> (privacy; no predictive value)</li>
+                    <li><strong>Zero variance:</strong> <code>MobileMoneyTransactions</code></li>
+                    <li><strong>Date columns:</strong> consumed into temporal features, then dropped</li>
+                </ul>
+                <div class="docs-callout">
+                    <strong>Post-disbursement features.</strong> Six behavioural features (missed installments, days in arrears, repayment counts and values, deposits, account activity) describe activity <em>after</em> a loan is disbursed. They are deliberately included to support the research's portfolio-monitoring use case and dominate the model's learned signal. For a strictly pre-approval deployment they should be excluded (a commented-out drop list exists in <code>config.py</code>). At prediction time the API imputes them with training-set medians, since a new applicant has no repayment history.
+                </div>
+            </section>
+
+            <!-- 4. Features -->
+            <section id="features" class="glass-panel docs-section">
+                <h2>4. Preprocessing &amp; Feature Engineering</h2>
+                <p>The pipeline produces <strong>43 model features</strong> from the raw data.</p>
+                <h3>Temporal features</h3>
+                <p><code>ApprovalYear</code>, <code>ApprovalMonth</code>, <code>ApprovalQuarter</code> (from the approval date) and <code>DisbursementDelay</code> (days between approval and first disbursement).</p>
+                <h3>Engineered financial ratios</h3>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Feature</th><th>Formula</th></tr></thead>
+                    <tbody>
+                        <tr><td>LoanToIncomeRatio</td><td>LoanAmount / AverageMonthlyIncome</td></tr>
+                        <tr><td>LoanToCollateralRatio</td><td>LoanAmount / TotalCollateralValue</td></tr>
+                        <tr><td>SavingsToLoanRatio</td><td>CurrentSavingsBalance / LoanAmount</td></tr>
+                        <tr><td>CollateralCoverage</td><td>TotalCollateralValue / LoanAmount</td></tr>
+                        <tr><td>DTI (%)</td><td>(LoanAmount / LoanDuration) / AverageMonthlyIncome &times; 100</td></tr>
+                        <tr><td>LTV (%)</td><td>LoanAmount / TotalCollateralValue &times; 100</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <p>All ratios guard against division by zero (default to 0).</p>
+                <h3>Categorical encoding</h3>
+                <ul>
+                    <li><strong>Gender</strong>, <strong>PreviousDefaultHistory</strong>, <strong>EmploymentStatus</strong> &mdash; binary encoded</li>
+                    <li><strong>LoanType</strong> &mdash; grouped to top 10 categories + &ldquo;Other&rdquo;, then one-hot encoded</li>
+                    <li><strong>MaritalStatus</strong> &mdash; mapped to MARRIED / SINGLE / OTHER, then one-hot encoded</li>
+                    <li><strong>RepaymentSchedule</strong> &mdash; one-hot encoded (base category dropped)</li>
+                </ul>
+                <h3>Cleaning</h3>
+                <ul>
+                    <li>Missing values: numeric &rarr; median; categorical &rarr; mode</li>
+                    <li>Outlier capping at the 99th percentile for income, savings, loan amount, collateral, repayment value</li>
+                    <li>Scaling with <code>StandardScaler</code> fitted on training data only</li>
+                </ul>
+            </section>
+
+            <!-- 5. Training -->
+            <section id="training" class="glass-panel docs-section">
+                <h2>5. Training Methodology</h2>
+                <h3>Temporal train/test split</h3>
+                <p>To simulate real deployment (predicting future loans from past data), the split is temporal rather than random: <strong>train on 2021&ndash;2024</strong> (12,952 loans), <strong>test on 2025</strong> (4,048 loans).</p>
+                <h3>Class imbalance handling</h3>
+                <ul>
+                    <li><strong>SMOTE oversampling</strong> &mdash; Logistic Regression, Decision Tree, Random Forest</li>
+                    <li><strong><code>scale_pos_weight</code></strong> &mdash; XGBoost, trained on original un-resampled data</li>
+                </ul>
+                <h3>Cross-validation &amp; hyperparameters</h3>
+                <p>5-fold stratified cross-validation scored by ROC-AUC. Fixed random seed (42) throughout for reproducibility.</p>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Model</th><th>Key settings</th></tr></thead>
+                    <tbody>
+                        <tr><td>Logistic Regression</td><td>C=1.0, lbfgs, max_iter=1000</td></tr>
+                        <tr><td>Decision Tree</td><td>max_depth=10, min_samples_split=20, min_samples_leaf=10, balanced class weights</td></tr>
+                        <tr><td>Random Forest</td><td>200 trees, max_depth=12, min_samples_leaf=3, max_features=sqrt, balanced class weights</td></tr>
+                        <tr><td>XGBoost</td><td>250 trees, max_depth=5, learning_rate=0.1, subsample=0.8, colsample_bytree=0.8, scale_pos_weight</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </section>
+
+            <!-- 6. Results -->
+            <section id="results" class="glass-panel docs-section">
+                <h2>6. Evaluation Results</h2>
+                <h3>Cross-validation (5-fold ROC-AUC, training set)</h3>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Model</th><th>Mean AUC</th><th>Std</th></tr></thead>
+                    <tbody>
+                        <tr class="docs-best"><td>XGBoost</td><td>0.9700</td><td>0.0043</td></tr>
+                        <tr><td>Random Forest</td><td>0.9245</td><td>0.0042</td></tr>
+                        <tr><td>Decision Tree</td><td>0.8906</td><td>0.0040</td></tr>
+                        <tr><td>Logistic Regression</td><td>0.7920</td><td>0.0073</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <h3>Held-out temporal test set (2025 loans, n = 4,048)</h3>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall (Repaid)</th><th>Recall (Default)</th><th>F1</th><th>ROC-AUC</th></tr></thead>
+                    <tbody>
+                        <tr class="docs-best"><td>XGBoost</td><td>0.785</td><td>0.952</td><td>0.708</td><td>0.932</td><td>0.812</td><td>0.879</td></tr>
+                        <tr><td>Logistic Regression</td><td>0.745</td><td>0.807</td><td>0.803</td><td>0.632</td><td>0.805</td><td>0.846</td></tr>
+                        <tr><td>Random Forest</td><td>0.696</td><td>0.869</td><td>0.632</td><td>0.819</td><td>0.732</td><td>0.814</td></tr>
+                        <tr><td>Decision Tree</td><td>0.678</td><td>0.847</td><td>0.621</td><td>0.786</td><td>0.717</td><td>0.766</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <h3>Interpreting the champion (XGBoost)</h3>
+                <ul>
+                    <li><strong>93.2% default recall</strong> &mdash; catches 93 of every 100 loans that would default. Missing a defaulter is the costly error for a lender, so this is the headline number.</li>
+                    <li><strong>95.2% precision</strong> &mdash; when it approves, it is almost always right.</li>
+                    <li><strong>70.8% repaid recall</strong> &mdash; the trade-off: roughly 29% of creditworthy applicants are flagged as risky. A deliberately conservative operating point for a capital-constrained microfinance institution.</li>
+                    <li>The gap between CV AUC (0.970) and test AUC (0.879) reflects <strong>temporal drift</strong> &mdash; 2025 loans differ in distribution from 2021&ndash;2024. This is expected, and is precisely why a temporal split gives an honest estimate.</li>
+                </ul>
+                <p>McNemar's test (with continuity correction) confirms the champion's edge over each other model is statistically significant rather than noise.</p>
+            </section>
+
+            <!-- 7. Explainability -->
+            <section id="explainability" class="glass-panel docs-section">
+                <h2>7. Explainability (SHAP)</h2>
+                <p>A SHAP TreeExplainer is pre-built at API startup for the tree models; Logistic Regression falls back to coefficient &times; value contributions. Global importance (mean |SHAP|, champion model):</p>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Rank</th><th>Feature</th><th>Mean |SHAP|</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>DaysInArrears</td><td>0.0904</td></tr>
+                        <tr><td>2</td><td>AccountActivity</td><td>0.0660</td></tr>
+                        <tr><td>3</td><td>NumberOfRepayments</td><td>0.0608</td></tr>
+                        <tr><td>4</td><td>AverageRepaymentValue</td><td>0.0586</td></tr>
+                        <tr><td>5</td><td>NumberOfDeposits</td><td>0.0462</td></tr>
+                        <tr><td>6</td><td>MissedInstallments</td><td>0.0327</td></tr>
+                        <tr><td>7</td><td>LoanDuration</td><td>0.0311</td></tr>
+                        <tr><td>8</td><td>AverageMonthlyIncome</td><td>0.0135</td></tr>
+                        <tr><td>9</td><td>LoanAmount</td><td>0.0109</td></tr>
+                        <tr><td>10</td><td>TotalCollateralValue</td><td>0.0104</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <p>The top six drivers are post-disbursement behavioural features (see &sect;3). Among <strong>application-time</strong> features, the strongest signals are loan duration, income, loan amount, and collateral value. Per prediction, the API returns the top 5 drivers (excluding features unknown at application time) with a direction &mdash; e.g. <em>&ldquo;LoanDuration &mdash; increases risk&rdquo;</em> &mdash; which this webapp renders in the result panel.</p>
+            </section>
+
+            <!-- 8. API -->
+            <section id="api" class="glass-panel docs-section">
+                <h2>8. Prediction API Reference</h2>
+                <h3><span class="docs-method">GET</span> /health</h3>
+                <p>Liveness check. Returns loaded models, champion name, and version.</p>
+                <h3><span class="docs-method">GET</span> /models</h3>
+                <p>Lists available models and their test metrics.</p>
+                <h3><span class="docs-method post">POST</span> /predict</h3>
+                <p>Scores a loan application. All fields are required unless noted.</p>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Field</th><th>Type</th><th>Bounds</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>age</code></td><td>number</td><td>18&ndash;120</td><td>Applicant age (years)</td></tr>
+                        <tr><td><code>employment_status</code></td><td>string</td><td>&mdash;</td><td>"Self-Employed" or other</td></tr>
+                        <tr><td><code>prev_default</code></td><td>string</td><td>&mdash;</td><td>"Yes" / "No"</td></tr>
+                        <tr><td><code>income</code></td><td>number</td><td>0&ndash;10&#8313;</td><td>Average monthly income (UGX)</td></tr>
+                        <tr><td><code>savings</code></td><td>number</td><td>0&ndash;10&#8313;</td><td>Current savings balance (UGX)</td></tr>
+                        <tr><td><code>loan_amount</code></td><td>number</td><td>1&ndash;10&#8313;</td><td>Requested amount (UGX)</td></tr>
+                        <tr><td><code>collateral</code></td><td>number</td><td>0&ndash;10&#8313;</td><td>Total collateral value (UGX)</td></tr>
+                        <tr><td><code>loan_duration</code></td><td>number</td><td>1&ndash;72</td><td>Term in months</td></tr>
+                        <tr><td><code>guarantor_count</code></td><td>number</td><td>0&ndash;20</td><td>Number of guarantors</td></tr>
+                        <tr><td><code>membership_years</code></td><td>number</td><td>0&ndash;50</td><td>Years as SACCO member</td></tr>
+                        <tr><td><code>previous_loans_count</code></td><td>number</td><td>0&ndash;100</td><td>Prior loans taken</td></tr>
+                        <tr><td><code>interest_rate</code></td><td>number</td><td>0&ndash;100</td><td>Annual rate (%)</td></tr>
+                        <tr><td><code>model_choice</code></td><td>string</td><td>optional</td><td>One of the 4 model names; defaults to champion</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <h3>Example response</h3>
+                <pre><code>{
+  "is_approved": true,
+  "status": "LOAN APPROVED",
+  "confidence": 87.3,
+  "default_probability": 12.7,
+  "repaid_probability": 87.3,
+  "model_used": "XGBoost",
+  "dti": 14.2,
+  "ltv": 62.5,
+  "guardrail_violations": [],
+  "explanations": [
+    { "feature": "LoanDuration", "impact": 0.31, "direction": "decreases risk" }
+  ],
+  "timestamp": "2026-07-06T10:15:00"
+}</code></pre>
+                <p><strong>Decision logic:</strong> guardrail violations always deny (<code>DENIED — POLICY RULE</code>); otherwise approve if P(repaid) &ge; 0.5, else <code>LOAN DENIED — HIGH RISK</code>. <code>confidence</code> reports P(repaid) on approvals and P(default) on denials. Errors return <code>400</code> with a <code>message</code> field.</p>
+                <div class="docs-callout">
+                    <strong>Feature construction at inference.</strong> The API rebuilds the 43-feature vector from the 12 input fields: ratios recomputed with the training formulas, approval date set to today, <strong>Gender fixed to 0</strong> (not collected, for fair-lending compliance), one-hot groups defaulted to training base categories, post-disbursement features imputed with training-set medians, and everything scaled with the persisted training scaler.
+                </div>
+            </section>
+
+            <!-- 9. Guardrails -->
+            <section id="guardrails" class="glass-panel docs-section">
+                <h2>9. Business Rule Guardrails</h2>
+                <p>Hard policy limits applied <strong>after</strong> the model. Any violation results in denial regardless of the model's score, and violated rules are itemized in the response.</p>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Rule</th><th>Threshold</th></tr></thead>
+                    <tbody>
+                        <tr><td>Applicant age</td><td>18&ndash;75 years</td></tr>
+                        <tr><td>Debt-to-income ratio (DTI)</td><td>&le; 60%</td></tr>
+                        <tr><td>Loan-to-value ratio (LTV)</td><td>&le; 100%</td></tr>
+                        <tr><td>Loan-to-savings cap</td><td>Loan &le; 3&times; savings balance</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </section>
+
+            <!-- 10. Deployment -->
+            <section id="deployment" class="glass-panel docs-section">
+                <h2>10. Deployment &amp; Operations</h2>
+                <h3>Local</h3>
+                <pre><code>pip install -r requirements.txt
+python train.py          # retrain (requires dataset in project root)
+python eval_model.py     # optional: McNemar + SHAP evaluation
+python api.py            # serve API + webapp at http://localhost:5000</code></pre>
+                <h3>Production (Render.com)</h3>
+                <ul>
+                    <li>gunicorn with a <strong>single worker</strong> so the 4 models and SHAP explainers load into memory exactly once</li>
+                    <li>Health check on <code>/health</code>; <code>PORT</code> and public URL injected by the platform; CORS extends automatically</li>
+                    <li>The Flask API serves this webapp at the root path</li>
+                </ul>
+                <h3>Logging</h3>
+                <p><code>logs/training.log</code> traces each training run; <code>logs/api.log</code> records every prediction with model, decision, P(default), DTI, LTV, and violation count &mdash; an audit trail.</p>
+            </section>
+
+            <!-- 11. Limitations -->
+            <section id="limitations" class="glass-panel docs-section">
+                <h2>11. Limitations &amp; Ethical Considerations</h2>
+                <ol class="docs-numbered">
+                    <li><strong>Post-disbursement signal dominance.</strong> The strongest predictors are repayment-behaviour features unavailable for genuinely new applicants; at inference these are median-imputed, so first-time applicants are effectively scored on application-time features only. For a pure pre-approval product, retrain with those features excluded and re-benchmark.</li>
+                    <li><strong>Temporal drift.</strong> Test AUC (0.879) sits below CV AUC (0.970) because loan behaviour shifts year to year. Retrain at least annually and monitor for drift.</li>
+                    <li><strong>Fairness.</strong> Gender exists in training data but is neutralized at inference. A formal disparate-impact analysis across gender, age, and marital-status groups is recommended before regulatory-grade deployment.</li>
+                    <li><strong>Threshold choice.</strong> The 0.5 threshold favours default detection over approval volume; tune it to the institution's actual cost of default vs. rejected good customers.</li>
+                    <li><strong>Scope.</strong> Trained exclusively on EBO-SACCO's Western-Uganda portfolio; performance does not transfer elsewhere without revalidation.</li>
+                    <li><strong>Decision support, not automation.</strong> Outputs are recommendations with explanations; final decisions should remain with credit officers.</li>
+                </ol>
+            </section>
+
+            <!-- 12. Retraining -->
+            <section id="retraining" class="glass-panel docs-section">
+                <h2>12. Retraining Procedure</h2>
+                <ol class="docs-numbered">
+                    <li>Place the updated dataset in the project root (or pass <code>--data path.xlsx</code>)</li>
+                    <li>Run <code>python train.py</code> &mdash; regenerates all models, plots, and metadata</li>
+                    <li>Review <code>models/model_comparison.csv</code> and <code>plots/</code> for regressions</li>
+                    <li>Run <code>python eval_model.py</code> &mdash; confirm significance (McNemar) and inspect SHAP shifts</li>
+                    <li>Update the <code>UNKNOWN_AT_APPLICATION</code> medians in <code>api.py</code> to match the new training data</li>
+                    <li>Bump <code>MODEL_VERSION</code> in <code>config.py</code>; restart the API to load new artifacts</li>
+                </ol>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>EBO-SACCO Credit Scoring System v2.0.0 &mdash; MSc IT Research Project, Victoria University Kampala</p>
+        </footer>
+    </div>
+</body>
+</html>
